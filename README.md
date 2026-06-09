@@ -43,3 +43,23 @@ go build -o esproject ./cmd/release
 - `POST /api/member/invite` : Пригласить пользователя в проект (только владелец)
 - `POST /api/member/kick` : Исключить участника из проекта (только владелец)
 - `GET /swagger/*any` : Swagger UI и документация
+
+### Конфигурация
+- Для запуска нужно прописать конфигурационный файл configs/config.yml. Пример ключевых полей:
+
+```yaml
+port: "8011"
+db:
+	host: "..."
+	port: "3306"
+	username: "..."
+	dbname: "..."
+
+oauth:
+	google:
+		redirectURL: "https://example.com/google-callback"
+		clientID: "<CLIENT_ID>"
+		scopes: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
+	telegram:
+		botId: "<BOT_ID>"
+```
