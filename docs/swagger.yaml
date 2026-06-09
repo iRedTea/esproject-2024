@@ -1,0 +1,330 @@
+basePath: /api
+definitions:
+  esproject.Project:
+    properties:
+      id:
+        type: integer
+      members:
+        items:
+          type: integer
+        type: array
+      name:
+        type: string
+      owner_id:
+        type: integer
+      tags:
+        items:
+          type: string
+        type: array
+    type: object
+  esproject.ProjectInvite:
+    properties:
+      id:
+        type: integer
+      project:
+        type: integer
+      user:
+        type: integer
+    type: object
+  handler.countResponse:
+    properties:
+      count:
+        type: integer
+    type: object
+  handler.memberRequest:
+    properties:
+      project:
+        type: integer
+      user:
+        type: integer
+    type: object
+  handler.projectRequest:
+    properties:
+      name:
+        type: string
+      owner_id:
+        type: integer
+      tags:
+        items:
+          type: string
+        type: array
+    type: object
+host: project.easystartup.su
+info:
+  contact:
+    email: red.tea.dev@gmail.com
+    name: API Support
+  description: Project service for EasyStartup.
+  title: EasyStartup Project
+  version: "1.0"
+paths:
+  /api/member/invite/:
+    post:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: invite data in json format
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/handler.memberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/esproject.ProjectInvite'
+      summary: invite member (only for owner of project)
+      tags:
+      - member
+  /api/member/invite/{id}:
+    get:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+      summary: invite by id
+      tags:
+      - member
+  /api/member/invite/accept/{id}:
+    post:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of invite
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: accept invite
+      tags:
+      - member
+  /api/member/invite/my:
+    get:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+      summary: invites of current user
+      tags:
+      - member
+  /api/member/kick/:
+    post:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: invite data in json format
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/handler.memberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: kick member (only for owner of project)
+      tags:
+      - member
+  /api/project:
+    post:
+      parameters:
+      - description: Project data in JSON
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/handler.projectRequest'
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: created project
+          schema:
+            $ref: '#/definitions/esproject.Project'
+      summary: Create new project
+      tags:
+      - project
+  /api/project/:
+    post:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: edited project
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/esproject.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/esproject.Project'
+      summary: Edit project (only for owner of project)
+      tags:
+      - project
+  /api/project/{id}:
+    delete:
+      parameters:
+      - description: id of project
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete project by id (only for owner of project)
+      tags:
+      - project
+    get:
+      parameters:
+      - description: id of project
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Get project by id
+      tags:
+      - project
+  /api/project/all:
+    get:
+      parameters:
+      - description: limit of projects size
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: select offset
+        in: query
+        name: start
+        required: true
+        type: integer
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+      summary: Get ids of projects
+      tags:
+      - project
+  /api/project/count:
+    get:
+      parameters:
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.countResponse'
+      summary: Get count of projects
+      tags:
+      - project
+  /api/project/my:
+    get:
+      parameters:
+      - description: limit of projects size
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: JWT Bearer token (authorization)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+      summary: Get ids of projects when user is member
+      tags:
+      - project
+swagger: "2.0"
