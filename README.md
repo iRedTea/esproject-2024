@@ -54,12 +54,4 @@ db:
 	port: "3306"
 	username: "..."
 	dbname: "..."
-
-oauth:
-	google:
-		redirectURL: "https://example.com/google-callback"
-		clientID: "<CLIENT_ID>"
-		scopes: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
-	telegram:
-		botId: "<BOT_ID>"
 ```
